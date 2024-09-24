@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import random
 from tokenignore import token
+import os
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='$', intents=intents)
@@ -48,6 +49,16 @@ async def repeat(ctx, times: int, content='repeating...'):
 async def joined(ctx, member: discord.Member):
     """Says when a member joined."""
     await ctx.send(f'{member.name} joined {discord.utils.format_dt(member.joined_at)}')
+
+@bot.command()
+async def randommem(ctx):
+    image_list = os.listdir('images')
+    random_image = random.choice(image_list)
+    with open('images/'+random_image, 'rb') as f:
+        # Dönüştürülen Discord kütüphane dosyasını bu değişkende saklayalım!
+        picture = discord.File(f)
+   # Daha sonra bu dosyayı bir parametre olarak gönderebiliriz!
+    await ctx.send(file=picture)
 
 @bot.group()
 async def cool(ctx):
